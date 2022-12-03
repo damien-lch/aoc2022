@@ -9,18 +9,24 @@ const isUpperCase = (input) => {
 const getSameChar = (string1, string2, string3) => {
   let same;
   string1.split("").forEach((s1) => {
-    string2.split("").forEach((s2) => {
-      string3.split("").forEach((s3) => {
-        if (s1 == s2 && s1 == s3) {
-          if (
-            (isUpperCase(s1) && isUpperCase(s2) && isUpperCase(s3)) ||
-            (!isUpperCase(s1) && !isUpperCase(s2) && !isUpperCase(s3))
-          ) {
-            same = s1;
-          }
-        }
+    string2
+      .split("")
+      .filter((s2) => string1.includes(s2))
+      .forEach((s2) => {
+        string3
+          .split("")
+          .filter((s3) => string2.includes(s3))
+          .forEach((s3) => {
+            if (s1 == s2 && s1 == s3) {
+              if (
+                (isUpperCase(s1) && isUpperCase(s2) && isUpperCase(s3)) ||
+                (!isUpperCase(s1) && !isUpperCase(s2) && !isUpperCase(s3))
+              ) {
+                same = s1;
+              }
+            }
+          });
       });
-    });
   });
   return same;
 };
