@@ -13,10 +13,15 @@ arr.forEach((line) => {
 treesVisible += matrice.length * 2;
 treesVisible += matrice[0].length * 2 - 4;
 
-const isTreeVisible = (coords) => {
+const getScenicScore = (coords) => {
+  let topScore = 0;
+  let leftScore = 0;
+  let rightScore = 0;
+  let bottomScore = 0;
   //Top
   let topVisible = true;
   for (let t = coords.y - 1; t >= 0; t--) {
+    topScore++;
     if (matrice[t][coords.x] >= coords.height) {
       topVisible = false;
       break;
@@ -25,6 +30,7 @@ const isTreeVisible = (coords) => {
   //Left
   let leftVisible = true;
   for (let l = coords.x - 1; l >= 0; l--) {
+    leftScore++;
     if (matrice[coords.y][l] >= coords.height) {
       leftVisible = false;
       break;
@@ -33,6 +39,7 @@ const isTreeVisible = (coords) => {
   //Bottom
   let bottomVisible = true;
   for (let b = coords.y + 1; b < matrice.length; b++) {
+    bottomScore++;
     if (matrice[b][coords.x] >= coords.height) {
       bottomVisible = false;
       break;
@@ -41,19 +48,22 @@ const isTreeVisible = (coords) => {
   //Right
   let rightVisible = true;
   for (let r = coords.x + 1; r < matrice.length; r++) {
+    rightScore++;
     if (matrice[coords.y][r] >= coords.height) {
       rightVisible = false;
       break;
     }
   }
-  return topVisible || leftVisible || bottomVisible || rightVisible;
+  return topScore * leftScore * bottomScore * rightScore;
 };
+
+let scenicScores = [];
 
 for (let i = 1; i < matrice.length - 1; i++) {
   const line = matrice[i];
   for (let j = 1; j < line.length - 1; j++) {
-    if (isTreeVisible({ x: +i, y: +j, height: +matrice[j][i] })) treesVisible++;
+    scenicScores.push(getScenicScore({ x: +i, y: +j, height: +matrice[j][i] }));
   }
 }
 
-console.log(treesVisible);
+console.log(Math.max(...scenicScores));
